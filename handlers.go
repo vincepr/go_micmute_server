@@ -21,23 +21,24 @@ var websocketUpgrader = websocket.Upgrader{
 /*
 *		Controllers are Clients(Website) who want to controll the others Microphone and Volume settings
 *		They send controllerRequests via HTML Post-Requests, including validation and the signal type.
-*/
+ */
 
 // Controller tries to send these signals to turn Volume Up, Mute the mic etc...
 type controllerRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Signal string `json:"signal"`
+	Signal   string `json:"signal"`
 }
 
-func (m *Manager)ControllerRequestHandler(w http.ResponseWriter, r *http.Request) {
+func (m *Manager) ControllerRequestHandler(w http.ResponseWriter, r *http.Request) {
 	var req controllerRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	// Check if username and password match up
-	if !m.isValidUsernamePw(req.Username, req.Password) {
+	if _, ok := m.isValidUsernamePw(req.Username, req.Password); !ok {
+		log.Println("SENDING ERROR BACK")
 		http.Error(w, "failed authorisation", http.StatusUnauthorized)
 		return
 	}
@@ -49,7 +50,7 @@ func (m *Manager)ControllerRequestHandler(w http.ResponseWriter, r *http.Request
 *		- They Send credentials via http, get a OTP back, use OTP to try to Update to WS
 *		- And then stay connected via WS, continously listening for Events/Signals
 *		- They must respond to continous pings with pongs otherwise connection drops
-*/
+ */
 
 type receiverLoginRequest struct {
 	Apikey   string `json:"apikey"`
@@ -98,7 +99,7 @@ func (m *Manager) serveReceiverHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Check if username already exists:
-	if m.isUsernameInUse(otp.Username) {
+	if m.isUsernameTaken(otp.Username) {
 		http.Error(w, "username already in use", http.StatusNotAcceptable)
 		return
 	}
@@ -110,7 +111,11 @@ func (m *Manager) serveReceiverHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	client := NewReceiverClient(conn, m, otp)
-	m.addReceiverClient(client)
+	if ok := m.addReceiverClient(client); !ok {
+		// 2 users could theoretically try to upgrade with same name so we close 2nd.
+		client.conn.WriteMessage(websocket.CloseMessage, nil)
+		return
+	}
 	go client.getEvents()
 	go client.sendEvents()
 }

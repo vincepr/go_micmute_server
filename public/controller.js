@@ -24,12 +24,10 @@ function sendEvent(eventname) {
         body: JSON.stringify(formData),
         mode: "cors",
     }).then((response) => {
-        if(!(response.ok)) console.log(response);
+        if(response.ok) console.log(`${eventname} sent successfully`);
         else throw 'unauthorized';
     }).catch((err) => {alert(err)});
 }
-
-
 
 /*
 *   Classes describing the JSON data coming from the Server

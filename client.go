@@ -95,7 +95,7 @@ func (c *ReceiverClient) sendEvents() {
 			// we check for End of Conneciton:
 			if !ok {
 				if err := c.conn.WriteMessage(websocket.CloseMessage, nil); err != nil{
-					log.Println("connection closed because of:", err)
+					log.Println("connection CloseMessage sending failed with:", err)
 				}
 				return // we received the Close Signal -> we exit
 			}
