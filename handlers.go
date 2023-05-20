@@ -46,6 +46,9 @@ func (m *Manager)ControllerRequestHandler(w http.ResponseWriter, r *http.Request
 
 /*
 *		Receivers are Clients who want their Microphone/Volume controlled by Signals sent to them
+*		- They Send credentials via http, get a OTP back, use OTP to try to Update to WS
+*		- And then stay connected via WS, continously listening for Events/Signals
+*		- They must respond to continous pings with pongs otherwise connection drops
 */
 
 type receiverLoginRequest struct {

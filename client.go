@@ -19,7 +19,7 @@ var (
 	pongWait     = 10 * time.Second
 	pingInterval = (pongWait * 9) / 10
 	// in bytes. Maximum size of one Message.
-	msgMaxSize int64 = 1024
+	msgMaxSize int64 = 512
 )
 
 /*
@@ -92,17 +92,19 @@ func (c *ReceiverClient) sendEvents() {
 	for {
 		select {
 		case event, ok := <-c.eventQueue:
+			// we check for End of Conneciton:
 			if !ok {
 				if err := c.conn.WriteMessage(websocket.CloseMessage, nil); err != nil{
 					log.Println("connection closed because of:", err)
 				}
-				return // we received the Close Signal
+				return // we received the Close Signal -> we exit
 			}
+			// pack event we want to send:
 			data, err := json.Marshal(event)
 			if err != nil {
 				log.Println("Failed to json.Marshal", err)
 			}
-			// send regular event to connection
+			// send regular event to connection:
 			if err := c.conn.WriteMessage(websocket.TextMessage, data); err !=nil {
 				log.Println("Failed Writing to Channel:", err)
 			}

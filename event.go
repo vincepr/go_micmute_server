@@ -5,24 +5,24 @@
 
 package main
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
-// Wrapper for different Event Types. All Incoming and Outgoing Messages use this as `encoding`
+// Wrapper for different Event Types. Corresponds to MEssages sent over the WebSocket.
 type Event struct {
 	Type    string          `json:"type"`
 	Payload json.RawMessage `json:"payload"`
 }
 
-// Signature for Diferent Event-Types
-//type EventHandler func(event Event, c *Client) error
+// Signature to easily extend Different Event-Types later
+type EventHandler func(event Event, c *ReceiverClient) error
 
 // All supported Event Types:
 const (
-	SignalToReceiver  = "change_status"  	// Controller -> Server -> Receiver (ex. Volume_Up, Toggle_Mic)
-	SignalToServer = "status_changed" 		// C# > Server (ex. Disconnecting)
+	EventSignalToReceiver  = "receiver_signal"  	// Controller -> Server -> Receiver (ex. Volume_Up, Toggle_Mic)
 )
 
-type EventToReceiver struct {
-	Id string `json:"id"`
-	
+type SignalToReceiver struct {
+	Id string `json:"id"`	
 }

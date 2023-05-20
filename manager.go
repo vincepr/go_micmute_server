@@ -13,9 +13,10 @@ import (
 )
 
 type Manager struct {
-	receivers    ReceiverList   // stores all open WebSocket Connections (whose Microphones get controlled)
-	sync.RWMutex                // Mutex for async safety
-	otps         RetentionMap   // all currently valid login tokens (just a few sec valid)
+	sync.RWMutex                		// Mutex for async safety
+	receivers    ReceiverList   		// stores all open WebSocket Connections (whose Microphones get controlled)
+	otps         RetentionMap   		// all currently valid login tokens (just a few sec valid)
+	handlers	map[string]EventHandler	// map all supported Even-types to their Handler-Function
 }
 
 func NewManager(ctx context.Context) *Manager {
@@ -26,12 +27,12 @@ func NewManager(ctx context.Context) *Manager {
 	return manager
 }
 
+type ReceiverList map[*ReceiverClient]bool
+
 /*
 *		Methods for adding or removing Websocket connections from our maps.
 *		we Lock our mutex whenever reading/writing.
 */
-
-type ReceiverList map[*ReceiverClient]bool
 
 // add the newly connected client to our List of all current clients
 func (m *Manager) addReceiverClient(client *ReceiverClient) {
