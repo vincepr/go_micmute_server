@@ -37,11 +37,19 @@ func (m *Manager) ControllerRequestHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	// Check if username and password match up
-	if _, ok := m.isValidUsernamePw(req.Username, req.Password); !ok {
-		log.Println("SENDING ERROR BACK")
+	receiver, ok := m.isValidUsernamePw(req.Username, req.Password);
+	if !ok {
 		http.Error(w, "failed authorisation", http.StatusUnauthorized)
 		return
 	}
+	// build the event we want to send:
+	event, err := NewSignalToReceiver(req.Signal)
+	if err != nil{
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+	// push the event into the receivers queue:
+	receiver.eventQueue <- *event
+
 	w.WriteHeader(http.StatusOK)
 }
 
