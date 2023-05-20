@@ -17,18 +17,15 @@ function sendEvent(eventname) {
     let formData = {
         "username": document.getElementById("username").value,
         "password": document.getElementById("password").value,
-        "event": eventname
+        "signal": eventname
     }
     fetch("controller", {
         method: "post",
         body: JSON.stringify(formData),
         mode: "cors",
     }).then((response) => {
-        if(response.ok) return response.json();
+        if(!(response.ok)) console.log(response);
         else throw 'unauthorized';
-    }).then((data) => {
-        console.log(data)
-        //
     }).catch((err) => {alert(err)});
 }
 

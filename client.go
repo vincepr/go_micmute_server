@@ -7,7 +7,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"time"
 
@@ -20,75 +19,8 @@ var (
 	pongWait     = 10 * time.Second
 	pingInterval = (pongWait * 9) / 10
 	// in bytes. Maximum size of one Message.
-	msgMaxSize int64 = 512
+	msgMaxSize int64 = 1024
 )
-
-
-/*
-*		Client that acts as the Controller (webbrowser) -> sending the Mute/Volume-up signals
-*/
-
-type ControllerClient struct {
-	conn           *websocket.Conn
-	manager        *Manager   // ref to manager responsible for this connection
-	eventQueue     chan Event // all yet to handle Events for this WebSocket (channel blocks so async save)
-	targetUsername string
-	targetPassword string
-}
-
-func NewControllerClient(conn *websocket.Conn, manager *Manager, otp OTP) *ControllerClient {
-	return &ControllerClient{
-		conn:           conn,
-		manager:        manager,
-		eventQueue:     make(chan Event),
-		targetUsername: otp.Username,
-		targetPassword: otp.Password,
-	}
-}
-
-// from Browser -> Server
-func (c *ControllerClient) getEvents() {
-	defer func() {
-		c.manager.removeControllerClient(c)
-	}()
-	// Setup auto Disconect(using ping/pong) and maxMessageSize
-	c.conn.SetReadLimit(msgMaxSize)
-	if err := c.conn.SetReadDeadline(time.Now().Add(pongWait)); err != nil {
-		log.Println("could not set timeout:", err)
-		return
-	}
-	c.conn.SetPongHandler(c.pongControllerHandler)
-
-	// Handling incoming Events
-	for {
-		_, payload, err := c.conn.ReadMessage()
-		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Println("Connection Has Closed Unexpected: ", err)
-			}
-			break
-		}
-		var request Event
-		if err := json.Unmarshal(payload, &request); err != nil {
-			log.Printf("Error json.Unmarshal: %v", err)
-			break // TODO: maybe handle this gracefully? request sending again etc...
-		}
-		// Route the Event
-		// if err := c.manager.routeEvent(request, c); err != nil {
-		// 	log.Println("Error routeEvent:", err)
-		// }
-	}
-}
-
-// from this Server -> Webbrowser
-func (c *ControllerClient) sendEvents() {
-	fmt.Println("controller sending")
-}
-
-// setup next Ping timer
-func (c *ControllerClient) pongControllerHandler(pongMsg string) error {
-	return c.conn.SetReadDeadline(time.Now().Add(pongWait))
-}
 
 /*
 * 		Client that acts as the Receiver (C# APP) -> receiving and acting on the Mute/Volume-up signals
@@ -148,7 +80,41 @@ func (c *ReceiverClient) getEvents() {
 
 // from this Server -> c#-application
 func (c *ReceiverClient) sendEvents() {
-	fmt.Println("controller sending")
+	// create a ticker that triggers the ping signal to check if connection is alive
+	ticker := time.NewTicker(pingInterval)
+
+	// gracefully close and cleanup
+	defer func() {
+		ticker.Stop()
+		c.manager.removeReceiverClient(c)
+	}()
+
+	for {
+		select {
+		case event, ok := <-c.eventQueue:
+			if !ok {
+				if err := c.conn.WriteMessage(websocket.CloseMessage, nil); err != nil{
+					log.Println("connection closed because of:", err)
+				}
+				return // we received the Close Signal
+			}
+			data, err := json.Marshal(event)
+			if err != nil {
+				log.Println("Failed to json.Marshal", err)
+			}
+			// send regular event to connection
+			if err := c.conn.WriteMessage(websocket.TextMessage, data); err !=nil {
+				log.Println("Failed Writing to Channel:", err)
+			}
+			log.Println("TODO: Remove: Send Event Successfully.")
+
+		case <-ticker.C:
+			if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
+				log.Println("no pong received in time:", err)
+				return	// got no answer -> we assume conection died
+			}
+		}
+	}
 }
 
 // setup next Ping timer
