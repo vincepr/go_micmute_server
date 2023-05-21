@@ -7,7 +7,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"sync"
 	"time"
 )
@@ -74,10 +73,8 @@ func (m *Manager) isValidUsernamePw(username string, password string) (*Receiver
 	defer m.RUnlock()
 	if client, ok := m.receivers[username]; ok {
 		if password == client.password {
-			log.Println("u:", username, "pw:", password, "was found!")
 			return client, true
 		}
 	}
-	log.Println("user not found OR wrong pw!")
 	return nil, false
 }

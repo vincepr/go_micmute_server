@@ -20,7 +20,7 @@ func main() {
 	testing()
 
 	initApi(ctx)
-	log.Fatal(http.ListenAndServe(":5555", nil))
+	log.Fatal(http.ListenAndServe(":3003", nil))
 }
 
 func initApi(ctx context.Context) {

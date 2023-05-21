@@ -108,11 +108,9 @@ func (c *ReceiverClient) sendEvents() {
 			if err := c.conn.WriteMessage(websocket.TextMessage, data); err !=nil {
 				log.Println("Failed Writing to Channel:", err)
 			}
-			log.Println("TODO: Remove: Send Event Successfully.")
-
 		case <-ticker.C:
 			if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
-				log.Println("no pong received in time:", err)
+				//log.Println("no pong received in time. Closed connection:", err)
 				return	// got no answer -> we assume conection died
 			}
 		}
