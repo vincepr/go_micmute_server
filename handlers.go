@@ -19,7 +19,7 @@ var websocketUpgrader = websocket.Upgrader{
 }
 
 /*
-*		Controllers are Clients(Website) who want to controll the others Microphone and Volume settings
+*		Controllers are Clients (from Website) who want to controll the others Microphone and Volume settings
 *		They send controllerRequests via HTML Post-Requests, including validation and the signal type.
  */
 
@@ -108,7 +108,7 @@ func (m *Manager) serveReceiverHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Check if username already exists:
 	if m.isUsernameTaken(otp.Username) {
-		http.Error(w, "username already in use", http.StatusNotAcceptable)
+		http.Error(w, "username already in use", http.StatusConflict)
 		return
 	}
 	// upgrade the HTTP request to a Websocket Connection
