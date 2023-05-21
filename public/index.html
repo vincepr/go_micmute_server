@@ -5,39 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mic Mute</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <div class="center">
-        <!-- Login: -->
-        
-        <h1>Mic Mute Prototype</h1>
-        <h3 id="header">Just enter the username & password from your app and send the signals</h3>
-        
-        <div style="border: 3px solid black;margin-top: 30px;">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username"/><br/>
-            <label for="password">Password</label>
-            <input type="text" id="password" name="password"/><br/><br/>
+    <div class="header">
+        <a href="#default" class="logo">Microphone Mute via Web</a>
+        <div class="header-right">
+            <a class="active" href="#home">Remote</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/vincepr/go_micmute_server">Github</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/vincepr/Mic_Mute/blob/master/win-x86/MicroMuteTerminal.exe">Download</a>
         </div>
-        
-        <div name="row">
-            <button id="volDown"><img src="/img/down.svg" alt="volDown" /></button>
-            <button id="volToggle"><img src="/img/mute.svg" alt="volToggle" /></button>
-            <button id="volUp"><img src="/img/up.svg" alt="volUp" /></button>
-        </div>
-
-        <div name="row">
-            <button id="micDown"><img src="/img/down.svg" alt="micDown" /></button>
-            <button id="micToggle"><img src="/img/mic.svg" alt="micToggle" /></button>
-            <button id="micUp"><img src="/img/up.svg" alt="micUp" /></button>
-        </div>
-
-
-        
-
-        
     </div>
+        
+        <h2>Control your Speaker and Microphone-Volume with your Smartphone</h2>
+        <p>Just enter the username & password from your app and start sending Signals</hp>
+        
+        <div class="credentials">
+            <label for="username"><b>Username</b></label>
+            <input type="text" id="username" name="username"/><br/>
+            <label for="password"><b>Password</b></label>
+            <input type="password" id="password" name="password"/><br/><br/>
+        </div>
+
+        <div class="volButtonBox">
+            <button id="volDown" class="volButton"><img src="/img/down.svg" alt="volDown" /></button>
+            <button id="volToggle" class="volButton"><img src="/img/mute.svg" alt="volToggle" /></button>
+            <button id="volUp" class="volButton"><img src="/img/up.svg" alt="volUp" /></button>
+        </div>
+
+        <div class="volButtonBox">
+            <button id="micDown" class="volButton"><img src="/img/down.svg" alt="micDown" /></button>
+            <button id="micToggle" class="volButton"><img src="/img/mic.svg" alt="micToggle" /></button>
+            <button id="micUp" class="volButton"><img src="/img/up.svg" alt="micUp" /></button>
+        </div>
+
+
     <script defer type="text/javascript" src="./controller.js"></script> 
 </body>
 </html>
