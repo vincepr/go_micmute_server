@@ -16,4 +16,4 @@ COPY src/public/. /var/www/go_micmute_server/
 
 EXPOSE 3003
 
-ENTRYPOINT [ "/go/bin/go_micmute_server", "--port", "3003", "files", "/var/www/go_micmute_server"]
+ENTRYPOINT [ "/go/bin/go_micmute_server", "--port", "3003", "--files", "/var/www/go_micmute_server"]

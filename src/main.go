@@ -14,7 +14,7 @@ import (
 // Optional Flags, with default values if not set.
 var (
 	PORT = flag.String("port", "3003", "the port the server listens to")
-	PATH_TO_PUBLICFOLDER = flag.String("files", "/var/www/go_micmute_server", "expected path to the /public folder with index.html")
+	PATH_TO_PUBLICFOLDER = flag.String("files", "./public", "expected path to the /public folder with index.html")
 )
 
 func main() {
