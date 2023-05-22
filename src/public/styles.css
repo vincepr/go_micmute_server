@@ -1,6 +1,7 @@
 /*
 *       THE HEADER
 */
+
 html, body{
     background-color: var(--col4);
 }
@@ -13,14 +14,12 @@ html, body{
     --col5: rgb(74, 164, 161);
 } 
 
-/* Style the header with a grey background and some padding */
 .header {
     overflow: hidden;
     background-color: var(--col3);
     padding: 20px 10px;
   }
   
-/* Style the header links */
 .header a {
     float: left;
     color: black;
@@ -32,30 +31,25 @@ html, body{
     border-radius: 4px;
 }
   
-/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
 .header a.logo {
     font-size: 25px;
     font-weight: bold;
 }
   
-/* Change the background color on mouse-over */
 .header a:hover {
     background-color: var(--col2);
     color: black;
 }
   
-/* Style the active/current link*/
 .header a.active {
     background-color: var(--col1);
     color: white;
 }
   
-/* Float the link section to the right */
 .header-right {
     float: right;
 }
 
-/* Responsive Design for Smartphones */
 @media screen and (max-width: 500px) {
     .header a {
         float: none;
@@ -71,6 +65,7 @@ html, body{
 /*
 *       THE USERNAME - PASSWORD FIELDS
 */
+
 .credentials{
     padding: 10px;
 }
@@ -125,10 +120,14 @@ input[type=text], input[type=password] {
 
 
 #customAlert {
+    /* absolute position and centered: */
     position: fixed;
+    left: 50%;
+    top: 30px;
+    transform: translate(-50%,0);
+    
     visibility: hidden;
     min-width: 20rem;
-    /* margin-left: -200px;  */
     background-color: var(--col4);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     color: var(--col1);
@@ -136,10 +135,7 @@ input[type=text], input[type=password] {
     border-radius: 10px;
     padding: 16px;
     z-index: 1;
-    left: 50%;
-    top: 30px;
     font-size: 16px;
-    transform: translate(-50%,0);
     border:solid var(--col1) 1px;
 }
   
