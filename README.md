@@ -24,3 +24,5 @@ sudo nginx -t
 systemctl status nginx sudo systemctl restart nginx
 ```
 - afterwards run certbot
+
+## Building and running with Docker image
