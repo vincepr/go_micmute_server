@@ -1,4 +1,11 @@
 # Documentation is a work in progress
+Goal of this Project was to enable remote controlling the Microphone of the target computer.
+
+In a setting where the whole room shares one Room-Microphone in a Teams-Setting everyone could remote Mute-Toggle the microphone when raising a Question etc.
+
+## Optinal Flags
+- to specify the path /public folder with the index.html `--files ./src/public`
+- to change the port listening on: `--port 8080`
 
 ## Building and running the Docker image
 - `git clone https://github.com/vincepr/go_micmute_server.git`
@@ -8,13 +15,14 @@
 
 now we can access it in localhost:3003
 
-If we would want to expose it in our vps we could do so with--network="host" . Or we use something like nginx (see below)
+If we would want to expose it directly, we could do so with--network="host" . Or we use something like nginx (see below)
 - `sudo docker run -it --rm --network="host" -p 3003:3003 go_auth_proxy`
-
+### Auto restart for the docker image
 If we want it to autostart after reboots we can add the `-d --restart unless-stopped` flag:
 - `sudo docker run -it -d --restart unless-stopped -p 3003:3003 go_auth_proxy`
 
 ## Https via nginx & certbot:
+Quickest way to add https with minimal effort. Use nginx redirect that upgrades connection with a certificate.
 `sudo nano /etc/nginx/sites-available/mic.vprobst.de.conf`
 ```
 server {
