@@ -25,8 +25,8 @@ function sendEvent(eventname) {
         mode: "cors",
     }).then((response) => {
         if(response.ok) console.log(`${eventname} sent successfully`);
-        else throw 'unauthorized';
-    }).catch((err) => {alert(err)});
+        else throw 'unauthorized, use the username and password you get when running the MicMute.exe';
+    }).catch((err) => {customAlert(err)});
 }
 
 /*
@@ -39,4 +39,15 @@ class Event {
         this.type = type;
         this.payload = payload;
     }
+}
+
+/*
+*   Cusom Alert to display error messages and remove them afer a timeout
+*/
+
+function customAlert(textToDisplay) {
+    let x = document.getElementById("customAlert");
+    document.getElementById("customAlertText").innerHTML = textToDisplay;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
