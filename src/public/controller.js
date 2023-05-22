@@ -25,7 +25,7 @@ function sendEvent(eventname) {
         mode: "cors",
     }).then((response) => {
         if(response.ok) console.log(`${eventname} sent successfully`);
-        else throw 'Unauthorized, use the Username and Password from running the MicMute.exe';
+        else throw 'Unauthorized. Use Name and Password from MicMute.exe';
     }).catch((err) => {customAlert(err)});
 }
 

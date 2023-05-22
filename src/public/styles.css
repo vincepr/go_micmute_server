@@ -10,7 +10,7 @@ html, body{
     --col2: rgb(82, 109, 130);
     --col3: rgb(157, 178, 191);
     --col4: rgb(221, 230, 237);
-    --col5: rgb(54, 39, 77);
+    --col5: rgb(74, 164, 161);
 } 
 
 /* Style the header with a grey background and some padding */
@@ -55,6 +55,19 @@ html, body{
     float: right;
 }
 
+/* Responsive Design for Smartphones */
+@media screen and (max-width: 500px) {
+    .header a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+
+    .header-right {
+        float: none;
+    }
+}
+
 /*
 *       THE USERNAME - PASSWORD FIELDS
 */
@@ -69,7 +82,7 @@ input[type=text], input[type=password] {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-  }
+}
 
 /*
 *       THE VOLUME-CONTROL BUTTONS
@@ -98,25 +111,36 @@ input[type=text], input[type=password] {
     transform: translateY(4px);
 }
 
+/* Responsive Design for Pc/Tablet only */
+@media screen and (min-width: 1000px) {
+    .volButton {
+        width:10%;
+        height:10%;
+    }
+}
+
 /*
 *       CUSOM ALERT used to display error messages
 */
 
+
 #customAlert {
+    position: fixed;
     visibility: hidden;
     min-width: 20rem;
     /* margin-left: -200px;  */
-    background-color: var(--col5);
+    background-color: var(--col4);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    color: var(--col4);
+    color: var(--col1);
     text-align: center;
     border-radius: 10px;
     padding: 16px;
-    position: fixed;
     z-index: 1;
     left: 50%;
-    bottom: 30px;
+    top: 30px;
     font-size: 16px;
+    transform: translate(-50%,0);
+    border:solid var(--col1) 1px;
 }
   
 #customAlert.show {
@@ -126,23 +150,23 @@ input[type=text], input[type=password] {
 }
   
 @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
-    to {bottom: 30px; opacity: 1;}
+    from {top: 0; opacity: 0;} 
+    to {top: 30px; opacity: 1;}
 }
   
 @keyframes fadein {
-    from {bottom: 0; opacity: 0;}
-    to {bottom: 30px; opacity: 1;}
+    from {top: 0; opacity: 0;}
+    to {top: 30px; opacity: 1;}
 }
   
 @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;} 
-    to {bottom: 0; opacity: 0;}
+    from {top: 30px; opacity: 1;} 
+    to {top: 0; opacity: 0;}
 }
   
 @keyframes fadeout {
-    from {bottom: 30px; opacity: 1;}
-    to {bottom: 0; opacity: 0;}
+    from {top: 30px; opacity: 1;}
+    to {top: 0; opacity: 0;}
 }
 
 .checkicon i{
