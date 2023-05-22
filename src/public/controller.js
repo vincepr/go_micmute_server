@@ -44,15 +44,18 @@ class Event {
 /*
 *   Cusom Alert to display error messages and remove them afer a timeout
 */
-var timeoutFunction = function() {}
+
+var alertTimeout = setTimeout(null, 3000);
+
 function customAlert(textToDisplay) {
-    timeoutFunction = null;
+    clearTimeout(alertTimeout);
+
     let x = document.getElementById("customAlert");
     document.getElementById("customAlertText").innerHTML = textToDisplay;
-    x.className = "show";
-    timeoutFunction = function(){
+    x.className = "show"
+
+    alertTimeout = setTimeout(function(){
         x.className = x.className.replace("show", "");
         timeoutFunction = null;
-    }
-    setTimeout(timeoutFunction, 3000);
+    }, 3000);
 }
