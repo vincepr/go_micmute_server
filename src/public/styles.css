@@ -10,7 +10,7 @@ html, body{
     --col2: rgb(82, 109, 130);
     --col3: rgb(157, 178, 191);
     --col4: rgb(221, 230, 237);
-    --col5: rgb(84, 16, 21);
+    --col5: rgb(54, 39, 77);
 } 
 
 /* Style the header with a grey background and some padding */
@@ -104,8 +104,8 @@ input[type=text], input[type=password] {
 
 #customAlert {
     visibility: hidden;
-    min-width: 250px;
-    margin-left: -200px; 
+    min-width: 20rem;
+    /* margin-left: -200px;  */
     background-color: var(--col5);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     color: var(--col4);
