@@ -1,8 +1,7 @@
-/*
-*		Basic One Time Password - OTP solution for Authorisation
-*		happens before Websocket connection is established
- */
-
+/*		Basic One Time Password - OTP solution for Authorisation
+*		- happens before Websocket connection is established.
+*		- OTPs expire after a few seconds
+*/
 package main
 
 import (

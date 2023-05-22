@@ -1,7 +1,7 @@
-/*
-*		Handlers for the different API Routes like "/login" "/ws"
-*
- */
+/*		Handlers for the different API Routes like "/login" "/ws"
+*		- Controllers use stateless HTTP at the moment
+*		- Receivers use HTTP for login then stay connected on a WebSocket
+*/
 package main
 
 import (

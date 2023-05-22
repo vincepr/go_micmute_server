@@ -1,7 +1,7 @@
-/*
-*
-*
- */
+/*		At the Moment there exist only Receiver Clients
+*		- They stay connected via WebSocket. Cleanup after Connection drops
+*		- Ping-Pong gets used to check if Connection is alive in fixed intervalls
+*/
 
 package main
 
@@ -71,7 +71,8 @@ func (c *ReceiverClient) getEvents() {
 			log.Printf("Error json.Unmarshal: %v", err)
 			break // TODO: maybe handle this gracefully? request sending again etc...
 		}
-		// Route the Event
+
+		// Route the Event - Not needed at the moment but keeping it in if there is need to re-activate this later
 		// if err := c.manager.routeEvent(request, c); err != nil {
 		// 	log.Println("Error routeEvent:", err)
 		// }

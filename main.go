@@ -1,8 +1,7 @@
-/*
-*
-*
- */
-
+/*		Main entry point.
+*		- hard coded Listen-Port 3003 right now, we use a Docker container anyway
+*		- We also setup the Routes here (each handler-function handles one Path like "/login")
+*/
 package main
 
 import (
@@ -16,8 +15,6 @@ func main() {
 	rootCtx := context.Background()
 	ctx, cancel := context.WithCancel(rootCtx)
 	defer cancel()
-
-	testing()
 
 	initApi(ctx)
 	log.Fatal(http.ListenAndServe(":3003", nil))
@@ -34,9 +31,4 @@ func initApi(ctx context.Context) {
 	http.HandleFunc("./debug", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Receivers:",w, len(manager.receivers))
 	})
-}
-
-// TODO: remove this
-func testing() {
-
 }

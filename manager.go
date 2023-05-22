@@ -1,8 +1,7 @@
 /*
-*
-*
- */
-
+*		The Manager holds Reference to all connected WebSockets
+*		- we make use of a Mutex here for save concurrent access of that map
+*/
 package main
 
 import (

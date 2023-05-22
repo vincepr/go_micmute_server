@@ -1,8 +1,7 @@
 /*
-*
-*
- */
-
+*		Every Message exchange from this Server to connected Clients gets wrapped in the Event struct with an identifier
+*		- this way the System can be extended later and streamlines working across different languages (here JS, C# and GO)
+*/
 package main
 
 import (
@@ -38,6 +37,7 @@ type SignalToReceiver struct {
 	Signal string `json:"signal"`	
 }
 
+// SignalToReceiver are the Messages passed down to the Receiver Client that stays connected via WebSocket
 func NewSignalToReceiver(signal_str string) (*Event, error) {
 	if _, ok := supportedSignalsMap[signal_str]; !ok{
 		return nil, fmt.Errorf("unsupported Signal-identifier: %v", signal_str)
